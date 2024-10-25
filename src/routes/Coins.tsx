@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 0 20px;
+  padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
 
 const Header = styled.header`
-  height: 10vh;
+  height: 15vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,15 +18,15 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  margin-bottom: 10px;
-  border-radius: 15px;
-  background-color: #fff;
+  background-color: white;
   color: ${(props) => props.theme.bgColor};
+  border-radius: 15px;
+  margin-bottom: 10px;
   a {
     display: flex;
     align-items: center;
     padding: 20px;
-    transition: color 0.5s ease-in;
+    transition: color 0.2s ease-in;
   }
   &:hover {
     a {
@@ -41,15 +41,13 @@ const Title = styled.h1`
 `;
 
 const Loader = styled.span`
-  display: block;
-  font-size: 20px;
   text-align: center;
+  display: block;
 `;
 
-const IconImg = styled.img`
+const Img = styled.img`
   width: 35px;
   height: 35px;
-  border: 0;
   margin-right: 10px;
 `;
 
@@ -63,7 +61,7 @@ interface CoinInterface {
   type: string;
 }
 
-const Coins = () => {
+function Coins() {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -80,17 +78,19 @@ const Coins = () => {
         <Title>코인</Title>
       </Header>
       {loading ? (
-        <Loader>Loading ...</Loader>
+        <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
               <Link
-                to={{ pathname: `/${coin.id}`, state: { name: coin.name } }}
+                to={{
+                  pathname: `/${coin.id}`,
+                  state: { name: coin.name },
+                }}
               >
-                <IconImg
-                  src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
-                  alt=""
+                <Img
+                  src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
                 {coin.name} &rarr;
               </Link>
@@ -100,6 +100,5 @@ const Coins = () => {
       )}
     </Container>
   );
-};
-
+}
 export default Coins;
